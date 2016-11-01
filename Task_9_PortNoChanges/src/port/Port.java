@@ -15,27 +15,27 @@ import warehouse.Warehouse;
 public class Port {
 	private final static Logger logger = Logger.getRootLogger();
 	
-	private BlockingQueue<Berth> berthList; // очередь причалов
-	private Warehouse portWarehouse; // хранилище порта
+	private BlockingQueue<Berth> berthList; // РѕС‡РµСЂРµРґСЊ РїСЂРёС‡Р°Р»РѕРІ
+	private Warehouse portWarehouse; // С…СЂР°РЅРёР»РёС‰Рµ РїРѕСЂС‚Р°
 	// TODO
-	/*usedBerths не синхронизирована. Из-за данной ошибки синхронизации
-	 * в программе периодически выбрасывается исключение NullPointerException
-	 * Необходимо изменить  Map на ConcurrentMap*/
-	private Map<Ship, Berth> usedBerths; // какой корабль у какого причала стоит
+	/*usedBerths РЅРµ СЃРёРЅС…СЂРѕРЅРёР·РёСЂРѕРІР°РЅР°. РР·-Р·Р° РґР°РЅРЅРѕР№ РѕС€РёР±РєРё СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё
+	 * РІ РїСЂРѕРіСЂР°РјРјРµ РїРµСЂРёРѕРґРёС‡РµСЃРєРё РІС‹Р±СЂР°СЃС‹РІР°РµС‚СЃСЏ РёСЃРєР»СЋС‡РµРЅРёРµ NullPointerException
+	 * РќРµРѕР±С…РѕРґРёРјРѕ РёР·РјРµРЅРёС‚СЊ  Map РЅР° ConcurrentMap*/
+	private Map<Ship, Berth> usedBerths; // РєР°РєРѕР№ РєРѕСЂР°Р±Р»СЊ Сѓ РєР°РєРѕРіРѕ РїСЂРёС‡Р°Р»Р° СЃС‚РѕРёС‚
 
 	public Port(int berthSize, int warehouseSize) {
-		portWarehouse = new Warehouse(warehouseSize); // создаем пустое хранилище
-		berthList = new ArrayBlockingQueue<Berth>(berthSize); // создаем очередь причалов
-		for (int i = 0; i < berthSize; i++) { // заполняем очередь причалов непосредственно самими причалами
+		portWarehouse = new Warehouse(warehouseSize); // СЃРѕР·РґР°РµРј РїСѓСЃС‚РѕРµ С…СЂР°РЅРёР»РёС‰Рµ
+		berthList = new ArrayBlockingQueue<Berth>(berthSize); // СЃРѕР·РґР°РµРј РѕС‡РµСЂРµРґСЊ РїСЂРёС‡Р°Р»РѕРІ
+		for (int i = 0; i < berthSize; i++) { // Р·Р°РїРѕР»РЅСЏРµРј РѕС‡РµСЂРµРґСЊ РїСЂРёС‡Р°Р»РѕРІ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ СЃР°РјРёРјРё РїСЂРёС‡Р°Р»Р°РјРё
 			berthList.add(new Berth(i, portWarehouse));
 		}
 		//TODO 
-		/*используется непотокобезопасная реализация HashMap
-		 * ошибка синхронизации.
-		 * Необходимо изменить HashMap на ConcurrentHashMap*/
-		usedBerths = new HashMap<Ship, Berth>(); // создаем объект, который будет
-		// хранить связь между кораблем и причалом
-		logger.debug("Порт создан.");
+		/*РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РЅРµРїРѕС‚РѕРєРѕР±РµР·РѕРїР°СЃРЅР°СЏ СЂРµР°Р»РёР·Р°С†РёСЏ HashMap
+		 * РѕС€РёР±РєР° СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёРё.
+		 * РќРµРѕР±С…РѕРґРёРјРѕ РёР·РјРµРЅРёС‚СЊ HashMap РЅР° ConcurrentHashMap*/
+		usedBerths = new HashMap<Ship, Berth>(); // СЃРѕР·РґР°РµРј РѕР±СЉРµРєС‚, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚
+		// С…СЂР°РЅРёС‚СЊ СЃРІСЏР·СЊ РјРµР¶РґСѓ РєРѕСЂР°Р±Р»РµРј Рё РїСЂРёС‡Р°Р»РѕРј
+		logger.debug("РџРѕСЂС‚ СЃРѕР·РґР°РЅ.");
 	}
 	
 	public void setContainersToWarehouse(List<Container> containerList){
@@ -48,7 +48,7 @@ public class Port {
 			berth = berthList.take();
 			usedBerths.put(ship, berth);
 		} catch (InterruptedException e) {
-			logger.debug("Кораблю " + ship.getName() + " отказано в швартовке.");
+			logger.debug("РљРѕСЂР°Р±Р»СЋ " + ship.getName() + " РѕС‚РєР°Р·Р°РЅРѕ РІ С€РІР°СЂС‚РѕРІРєРµ.");
 			return false;
 		}		
 		return true;
@@ -62,7 +62,7 @@ public class Port {
 			berthList.put(berth);
 			usedBerths.remove(ship);
 		} catch (InterruptedException e) {
-			logger.debug("Корабль " + ship.getName() + " не смог отшвартоваться.");
+			logger.debug("РљРѕСЂР°Р±Р»СЊ " + ship.getName() + " РЅРµ СЃРјРѕРі РѕС‚С€РІР°СЂС‚РѕРІР°С‚СЊСЃСЏ.");
 			return false;
 		}		
 		return true;

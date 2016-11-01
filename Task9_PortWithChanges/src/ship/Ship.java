@@ -45,10 +45,10 @@ public class Ship implements Runnable {
 				inPort();
 			}
 		} catch (InterruptedException e) {
-			logger.error("С кораблем случилась неприятность и он уничтожен.", e);
+			logger.error("РЎ РєРѕСЂР°Р±Р»РµРј СЃР»СѓС‡РёР»Р°СЃСЊ РЅРµРїСЂРёСЏС‚РЅРѕСЃС‚СЊ Рё РѕРЅ СѓРЅРёС‡С‚РѕР¶РµРЅ.", e);
 		} catch (PortException e) {
-			// TODO сообщение переписано
-	 logger.error("Порт не смог обслужить корабль. Необходима срочная корректировка работы порта", e);
+			// TODO СЃРѕРѕР±С‰РµРЅРёРµ РїРµСЂРµРїРёСЃР°РЅРѕ
+	 logger.error("РџРѕСЂС‚ РЅРµ СЃРјРѕРі РѕР±СЃР»СѓР¶РёС‚СЊ РєРѕСЂР°Р±Р»СЊ. РќРµРѕР±С…РѕРґРёРјР° СЃСЂРѕС‡РЅР°СЏ РєРѕСЂСЂРµРєС‚РёСЂРѕРІРєР° СЂР°Р±РѕС‚С‹ РїРѕСЂС‚Р°", e);
 		}
 	}
 
@@ -67,17 +67,17 @@ public class Ship implements Runnable {
 			if (isLockedBerth) {
 				berth = port.getBerth(this);
 				// TODO 
-				// вывод изменен для лучшей отладки кода
-				logger.debug("Корабль " + name + " пришвартовался к причалу " + berth.getId() + " НА КОРАБЛЕ " + shipWarehouse.getRealSize());
+				// РІС‹РІРѕРґ РёР·РјРµРЅРµРЅ РґР»СЏ Р»СѓС‡С€РµР№ РѕС‚Р»Р°РґРєРё РєРѕРґР°
+				logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + " РїСЂРёС€РІР°СЂС‚РѕРІР°Р»СЃСЏ Рє РїСЂРёС‡Р°Р»Сѓ " + berth.getId() + " РќРђ РљРћР РђР‘Р›Р• " + shipWarehouse.getRealSize());
 				ShipAction action = getNextAction();
 				executeAction(action, berth);
 			} else {
-				logger.debug("Кораблю " + name + " отказано в швартовке к причалу ");
+				logger.debug("РљРѕСЂР°Р±Р»СЋ " + name + " РѕС‚РєР°Р·Р°РЅРѕ РІ С€РІР°СЂС‚РѕРІРєРµ Рє РїСЂРёС‡Р°Р»Сѓ ");
 			} 
 		} finally {
 			if (isLockedBerth){
 				port.unlockBerth(this);
-				logger.debug("Корабль " + name + " ОТШВАРТОВАЛСЯ от причала " + berth.getId());
+				logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + " РћРўРЁР’РђР РўРћР’РђР›РЎРЇ РѕС‚ РїСЂРёС‡Р°Р»Р° " + berth.getId());
 			}
 		}
 		
@@ -97,61 +97,61 @@ public class Ship implements Runnable {
 	private boolean loadToPort(Berth berth) throws InterruptedException { 
 
 		// TODO  
-		/*Изменен вызов метода для выбора из числа имеющихся контейнеров*/
+		/*РР·РјРµРЅРµРЅ РІС‹Р·РѕРІ РјРµС‚РѕРґР° РґР»СЏ РІС‹Р±РѕСЂР° РёР· С‡РёСЃР»Р° РёРјРµСЋС‰РёС…СЃСЏ РєРѕРЅС‚РµР№РЅРµСЂРѕРІ*/
 		int containersNumberToMove = conteinersCount(this.shipWarehouse.getRealSize());
 		boolean result = false;
 		if(containersNumberToMove == 0){
-			logger.debug("Корабль " + name + " полностью опустошен и не может ничего выгрузить в порт." );
+			logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + " РїРѕР»РЅРѕСЃС‚СЊСЋ РѕРїСѓСЃС‚РѕС€РµРЅ Рё РЅРµ РјРѕР¶РµС‚ РЅРёС‡РµРіРѕ РІС‹РіСЂСѓР·РёС‚СЊ РІ РїРѕСЂС‚." );
 			return result;
 		}
 
-		logger.debug("Корабль " + name + " хочет загрузить " + containersNumberToMove
-				+ " контейнеров на склад порта.");
+		logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + " С…РѕС‡РµС‚ Р·Р°РіСЂСѓР·РёС‚СЊ " + containersNumberToMove
+				+ " РєРѕРЅС‚РµР№РЅРµСЂРѕРІ РЅР° СЃРєР»Р°Рґ РїРѕСЂС‚Р°.");
 
 		result = berth.add(shipWarehouse, containersNumberToMove);
 		// TODO 
-		/*Проблема с сообщениями решена изменением метода conteinersCount*/
+		/*РџСЂРѕР±Р»РµРјР° СЃ СЃРѕРѕР±С‰РµРЅРёСЏРјРё СЂРµС€РµРЅР° РёР·РјРµРЅРµРЅРёРµРј РјРµС‚РѕРґР° conteinersCount*/
 		if (!result) {
-			logger.debug("Недостаточно места на складе порта для выгрузки кораблем "
-					+ name + " " + containersNumberToMove + " контейнеров.");
+			logger.debug("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РјРµСЃС‚Р° РЅР° СЃРєР»Р°РґРµ РїРѕСЂС‚Р° РґР»СЏ РІС‹РіСЂСѓР·РєРё РєРѕСЂР°Р±Р»РµРј "
+					+ name + " " + containersNumberToMove + " РєРѕРЅС‚РµР№РЅРµСЂРѕРІ.");
 		} else {
-			logger.debug("Корабль " + name + " выгрузил " + containersNumberToMove
-					+ " контейнеров в порт." + " Теперь в ПОРТУ " + port.getPortWarehouse().getRealSize() );
+			logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + " РІС‹РіСЂСѓР·РёР» " + containersNumberToMove
+					+ " РєРѕРЅС‚РµР№РЅРµСЂРѕРІ РІ РїРѕСЂС‚." + " РўРµРїРµСЂСЊ РІ РџРћР РўРЈ " + port.getPortWarehouse().getRealSize() );
 			
 		}
 		return result;
 	}
 
 	private boolean loadFromPort(Berth berth) throws InterruptedException { 
-		// TODO выбираем из количесва свободных мест 
+		// TODO РІС‹Р±РёСЂР°РµРј РёР· РєРѕР»РёС‡РµСЃРІР° СЃРІРѕР±РѕРґРЅС‹С… РјРµСЃС‚ 
 		int containersNumberToMove = conteinersCount(this.shipWarehouse.getFreeSize());
 		
 		boolean result = false;
 		if(containersNumberToMove == 0){
-			logger.debug("Корабль " + name + "полностью заполнен и не может ничего загрузить из порта." );
+			logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + "РїРѕР»РЅРѕСЃС‚СЊСЋ Р·Р°РїРѕР»РЅРµРЅ Рё РЅРµ РјРѕР¶РµС‚ РЅРёС‡РµРіРѕ Р·Р°РіСЂСѓР·РёС‚СЊ РёР· РїРѕСЂС‚Р°." );
 			return result;
 		}
 
-		logger.debug("Корабль " + name + " хочет загрузить " + containersNumberToMove
-				+ " контейнеров со склада порта.");
+		logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + " С…РѕС‡РµС‚ Р·Р°РіСЂСѓР·РёС‚СЊ " + containersNumberToMove
+				+ " РєРѕРЅС‚РµР№РЅРµСЂРѕРІ СЃРѕ СЃРєР»Р°РґР° РїРѕСЂС‚Р°.");
 		
 		result = berth.get(shipWarehouse, containersNumberToMove); 
 		if (result) {
-			logger.debug("Корабль " + name + " загрузил " + containersNumberToMove
-					+ " контейнеров из порта." + " Теперь в ПОРТУ " + port.getPortWarehouse().getRealSize());
+			logger.debug("РљРѕСЂР°Р±Р»СЊ " + name + " Р·Р°РіСЂСѓР·РёР» " + containersNumberToMove
+					+ " РєРѕРЅС‚РµР№РЅРµСЂРѕРІ РёР· РїРѕСЂС‚Р°." + " РўРµРїРµСЂСЊ РІ РџРћР РўРЈ " + port.getPortWarehouse().getRealSize());
 		} else {
-			// TODO  Вывод изменен т.к. сигнатура conteinersCount была изменена. Корабль не может запросить больше чем может принять 
-			//следовательно false вернется только если у порта запрашивают больше контейнеров чем есть в его хранилище
-			logger.debug("Недостаточно котейнеров в порту " 
-					+ "для погрузки " + containersNumberToMove + " контейнеров из порта на корабль " +  name + ".");
+			// TODO  Р’С‹РІРѕРґ РёР·РјРµРЅРµРЅ С‚.Рє. СЃРёРіРЅР°С‚СѓСЂР° conteinersCount Р±С‹Р»Р° РёР·РјРµРЅРµРЅР°. РљРѕСЂР°Р±Р»СЊ РЅРµ РјРѕР¶РµС‚ Р·Р°РїСЂРѕСЃРёС‚СЊ Р±РѕР»СЊС€Рµ С‡РµРј РјРѕР¶РµС‚ РїСЂРёРЅСЏС‚СЊ 
+			//СЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ false РІРµСЂРЅРµС‚СЃСЏ С‚РѕР»СЊРєРѕ РµСЃР»Рё Сѓ РїРѕСЂС‚Р° Р·Р°РїСЂР°С€РёРІР°СЋС‚ Р±РѕР»СЊС€Рµ РєРѕРЅС‚РµР№РЅРµСЂРѕРІ С‡РµРј РµСЃС‚СЊ РІ РµРіРѕ С…СЂР°РЅРёР»РёС‰Рµ
+			logger.debug("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РєРѕС‚РµР№РЅРµСЂРѕРІ РІ РїРѕСЂС‚Сѓ " 
+					+ "РґР»СЏ РїРѕРіСЂСѓР·РєРё " + containersNumberToMove + " РєРѕРЅС‚РµР№РЅРµСЂРѕРІ РёР· РїРѕСЂС‚Р° РЅР° РєРѕСЂР°Р±Р»СЊ " +  name + ".");
 		}
 		
 		return result;
 	}
 
 	// TODO
-	/*Метод изменен, вычисление производится на основе имеющегося количества
-	 * котейнеров на корабле. Значение 0 может быть возвращено только если на корабле 0 контейнеров*/
+	/*РњРµС‚РѕРґ РёР·РјРµРЅРµРЅ, РІС‹С‡РёСЃР»РµРЅРёРµ РїСЂРѕРёР·РІРѕРґРёС‚СЃСЏ РЅР° РѕСЃРЅРѕРІРµ РёРјРµСЋС‰РµРіРѕСЃСЏ РєРѕР»РёС‡РµСЃС‚РІР°
+	 * РєРѕС‚РµР№РЅРµСЂРѕРІ РЅР° РєРѕСЂР°Р±Р»Рµ. Р—РЅР°С‡РµРЅРёРµ 0 РјРѕР¶РµС‚ Р±С‹С‚СЊ РІРѕР·РІСЂР°С‰РµРЅРѕ С‚РѕР»СЊРєРѕ РµСЃР»Рё РЅР° РєРѕСЂР°Р±Р»Рµ 0 РєРѕРЅС‚РµР№РЅРµСЂРѕРІ*/
 	private int conteinersCount(int amount) {
 		Random random = new Random();
 		int result = random.nextInt(amount + 1);

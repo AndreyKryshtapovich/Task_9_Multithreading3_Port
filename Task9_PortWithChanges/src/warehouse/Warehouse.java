@@ -18,7 +18,7 @@ public class Warehouse {
 
 	public boolean addContainer(Container container) {
 		// TODO 
-		// добавлена проверка на добавление 1 ого контейнера
+		// РґРѕР±Р°РІР»РµРЅР° РїСЂРѕРІРµСЂРєР° РЅР° РґРѕР±Р°РІР»РµРЅРёРµ 1 РѕРіРѕ РєРѕРЅС‚РµР№РЅРµСЂР°
 		boolean result = false;
 		if((containerList.size() + 1 <= size)){
 			result = containerList.add(container);

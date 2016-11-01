@@ -18,7 +18,7 @@ public class Warehouse {
 
 	public boolean addContainer(Container container) {	
 		// TODO 
-		/*отсутствует проверка на вставку одного элемента*/
+		/*РѕС‚СЃСѓС‚СЃС‚РІСѓРµС‚ РїСЂРѕРІРµСЂРєР° РЅР° РІСЃС‚Р°РІРєСѓ РѕРґРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р°*/
 		return containerList.add(container);
 	}
 

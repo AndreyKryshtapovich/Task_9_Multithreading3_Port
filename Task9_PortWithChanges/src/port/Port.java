@@ -16,26 +16,26 @@ import warehouse.Warehouse;
 public class Port {
 	private final static Logger logger = Logger.getRootLogger();
 	
-	private BlockingQueue<Berth> berthList; // очередь причалов
-	private Warehouse portWarehouse; // хранилище порта
+	private BlockingQueue<Berth> berthList; // РѕС‡РµСЂРµРґСЊ РїСЂРёС‡Р°Р»РѕРІ
+	private Warehouse portWarehouse; // С…СЂР°РЅРёР»РёС‰Рµ РїРѕСЂС‚Р°
 	
-	// TODO Изменено  Map на ConcurrentMap
-	private ConcurrentMap<Ship, Berth> usedBerths; // какой корабль у какого причала стоит
+	// TODO РР·РјРµРЅРµРЅРѕ  Map РЅР° ConcurrentMap
+	private ConcurrentMap<Ship, Berth> usedBerths; // РєР°РєРѕР№ РєРѕСЂР°Р±Р»СЊ Сѓ РєР°РєРѕРіРѕ РїСЂРёС‡Р°Р»Р° СЃС‚РѕРёС‚
 
 	public Port(int berthSize, int warehouseSize) {
-		portWarehouse = new Warehouse(warehouseSize); // создаем пустое хранилище
-		berthList = new ArrayBlockingQueue<Berth>(berthSize); // создаем очередь причалов
-		for (int i = 0; i < berthSize; i++) { // заполняем очередь причалов непосредственно самими причалами
+		portWarehouse = new Warehouse(warehouseSize); // СЃРѕР·РґР°РµРј РїСѓСЃС‚РѕРµ С…СЂР°РЅРёР»РёС‰Рµ
+		berthList = new ArrayBlockingQueue<Berth>(berthSize); // СЃРѕР·РґР°РµРј РѕС‡РµСЂРµРґСЊ РїСЂРёС‡Р°Р»РѕРІ
+		for (int i = 0; i < berthSize; i++) { // Р·Р°РїРѕР»РЅСЏРµРј РѕС‡РµСЂРµРґСЊ РїСЂРёС‡Р°Р»РѕРІ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ СЃР°РјРёРјРё РїСЂРёС‡Р°Р»Р°РјРё
 			berthList.add(new Berth(i, portWarehouse));
 		}
-		// TODO исправлено  HashMap на ConcurrentHashMap
-		usedBerths = new ConcurrentHashMap<Ship, Berth>(); // создаем объект, который будет
-		// хранить связь между кораблем и причалом
-		logger.debug("Порт создан.");
+		// TODO РёСЃРїСЂР°РІР»РµРЅРѕ  HashMap РЅР° ConcurrentHashMap
+		usedBerths = new ConcurrentHashMap<Ship, Berth>(); // СЃРѕР·РґР°РµРј РѕР±СЉРµРєС‚, РєРѕС‚РѕСЂС‹Р№ Р±СѓРґРµС‚
+		// С…СЂР°РЅРёС‚СЊ СЃРІСЏР·СЊ РјРµР¶РґСѓ РєРѕСЂР°Р±Р»РµРј Рё РїСЂРёС‡Р°Р»РѕРј
+		logger.debug("РџРѕСЂС‚ СЃРѕР·РґР°РЅ.");
 	}
 	
 	
-	 //TODO метод добавлен
+	 //TODO РјРµС‚РѕРґ РґРѕР±Р°РІР»РµРЅ
 		public Warehouse getPortWarehouse() {
 			return portWarehouse;
 		}
@@ -52,7 +52,7 @@ public class Port {
 			usedBerths.put(ship, berth);
 			return true;
 		} catch (InterruptedException e) {
-			logger.debug("Кораблю " + ship.getName() + " отказано в швартовке.");
+			logger.debug("РљРѕСЂР°Р±Р»СЋ " + ship.getName() + " РѕС‚РєР°Р·Р°РЅРѕ РІ С€РІР°СЂС‚РѕРІРєРµ.");
 			return false;
 		}
 		
@@ -65,7 +65,7 @@ public class Port {
 			berthList.put(berth);
 			usedBerths.remove(ship);
 		} catch (InterruptedException e) {
-			logger.debug("Корабль " + ship.getName() + " не смог отшвартоваться.");
+			logger.debug("РљРѕСЂР°Р±Р»СЊ " + ship.getName() + " РЅРµ СЃРјРѕРі РѕС‚С€РІР°СЂС‚РѕРІР°С‚СЊСЃСЏ.");
 			return false;
 		}		
 		return true;

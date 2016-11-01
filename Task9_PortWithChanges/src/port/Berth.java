@@ -30,7 +30,7 @@ public class Berth {
 			portLock = portWarehouseLock.tryLock(30, TimeUnit.SECONDS);
 			if (portLock) {
 				int newConteinerCount = portWarehouse.getRealSize()	+ numberOfConteiners; 
-				// TODO изменено на portWarehouse.getSize()
+				// TODO РёР·РјРµРЅРµРЅРѕ РЅР° portWarehouse.getSize()
 				if (newConteinerCount <= portWarehouse.getSize()) { 
 					result = doMoveFromShip(shipWarehouse, numberOfConteiners);
 				}
@@ -51,7 +51,7 @@ public class Berth {
 		try{
 			shipLock = shipWarehouseLock.tryLock(30, TimeUnit.SECONDS);
 			if (shipLock) {
-				if(shipWarehouse.getRealSize() >= numberOfConteiners){ // если то сколько мы хотим выгрузить не больше реального кол-ва груза а корабле
+				if(shipWarehouse.getRealSize() >= numberOfConteiners){ // РµСЃР»Рё С‚Рѕ СЃРєРѕР»СЊРєРѕ РјС‹ С…РѕС‚РёРј РІС‹РіСЂСѓР·РёС‚СЊ РЅРµ Р±РѕР»СЊС€Рµ СЂРµР°Р»СЊРЅРѕРіРѕ РєРѕР»-РІР° РіСЂСѓР·Р° Р° РєРѕСЂР°Р±Р»Рµ
 					List<Container> containers = shipWarehouse.getContainer(numberOfConteiners); 
 					portWarehouse.addContainer(containers);  
 					return true;
@@ -74,7 +74,7 @@ public class Berth {
 		try{
 			portLock = portWarehouseLock.tryLock(30, TimeUnit.SECONDS);
 			if (portLock) {
-				if (numberOfConteiners <= portWarehouse.getRealSize()) { // если то что мы хотим загрузить не превышает то что имеется в наличии в порту
+				if (numberOfConteiners <= portWarehouse.getRealSize()) { // РµСЃР»Рё С‚Рѕ С‡С‚Рѕ РјС‹ С…РѕС‚РёРј Р·Р°РіСЂСѓР·РёС‚СЊ РЅРµ РїСЂРµРІС‹С€Р°РµС‚ С‚Рѕ С‡С‚Рѕ РёРјРµРµС‚СЃСЏ РІ РЅР°Р»РёС‡РёРё РІ РїРѕСЂС‚Сѓ
 					result = doMoveFromPort(shipWarehouse, numberOfConteiners);	
 				}
 			}
@@ -95,7 +95,7 @@ public class Berth {
 			shipLock = shipWarehouseLock.tryLock(30, TimeUnit.SECONDS);
 			if (shipLock) {
 				int newConteinerCount = shipWarehouse.getRealSize() + numberOfConteiners;
-				// TODO исправлено с shipWarehouse.getFreeSize() на shipWarehouse.getSize()
+				// TODO РёСЃРїСЂР°РІР»РµРЅРѕ СЃ shipWarehouse.getFreeSize() РЅР° shipWarehouse.getSize()
 				if(newConteinerCount <= shipWarehouse.getSize()){ 
 					List<Container> containers = portWarehouse.getContainer(numberOfConteiners); 
 					shipWarehouse.addContainer(containers); 

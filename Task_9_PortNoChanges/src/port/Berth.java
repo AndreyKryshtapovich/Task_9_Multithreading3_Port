@@ -31,9 +31,9 @@ public class Berth {
 			if (portLock) {
 				int newConteinerCount = portWarehouse.getRealSize() + numberOfConteiners;
 				//TODO
-				/*некорректное сравнение со значением portWarehouse.getFreeSize()
-				 * новое количество высчитывается как старое + добавка, необходимо сравнивать 
-				 * с общим местом в хранилище порта. Необходимо portWarehouse.getSize()*/
+				/*РЅРµРєРѕСЂСЂРµРєС‚РЅРѕРµ СЃСЂР°РІРЅРµРЅРёРµ СЃРѕ Р·РЅР°С‡РµРЅРёРµРј portWarehouse.getFreeSize()
+				 * РЅРѕРІРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РІС‹СЃС‡РёС‚С‹РІР°РµС‚СЃСЏ РєР°Рє СЃС‚Р°СЂРѕРµ + РґРѕР±Р°РІРєР°, РЅРµРѕР±С…РѕРґРёРјРѕ СЃСЂР°РІРЅРёРІР°С‚СЊ 
+				 * СЃ РѕР±С‰РёРј РјРµСЃС‚РѕРј РІ С…СЂР°РЅРёР»РёС‰Рµ РїРѕСЂС‚Р°. РќРµРѕР±С…РѕРґРёРјРѕ portWarehouse.getSize()*/
 				if (newConteinerCount <= portWarehouse.getFreeSize()) {
 					result = doMoveFromShip(shipWarehouse, numberOfConteiners);
 				}
@@ -99,9 +99,9 @@ public class Berth {
 			if (shipLock) {
 				int newConteinerCount = shipWarehouse.getRealSize() + numberOfConteiners;
 				//TODO 
-				/*Высчитанное новое количество должно сравниваться не со 
-				 * свободным, а с общим местом в хранилище корабля.
-				 * Необходимо shipWarehouse.getSize()*/
+				/*Р’С‹СЃС‡РёС‚Р°РЅРЅРѕРµ РЅРѕРІРѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕ РґРѕР»Р¶РЅРѕ СЃСЂР°РІРЅРёРІР°С‚СЊСЃСЏ РЅРµ СЃРѕ 
+				 * СЃРІРѕР±РѕРґРЅС‹Рј, Р° СЃ РѕР±С‰РёРј РјРµСЃС‚РѕРј РІ С…СЂР°РЅРёР»РёС‰Рµ РєРѕСЂР°Р±Р»СЏ.
+				 * РќРµРѕР±С…РѕРґРёРјРѕ shipWarehouse.getSize()*/
 				if (newConteinerCount <= shipWarehouse.getFreeSize()) {
 					List<Container> containers = portWarehouse.getContainer(numberOfConteiners);
 					shipWarehouse.addContainer(containers);
